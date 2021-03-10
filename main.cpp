@@ -3,7 +3,7 @@
 #include "httplib.h"
 
 int main(int argc, char* argv[]) {
-	httplib::Server svr;
+    httplib::Server svr;
 
     wiringPiSetup();
     pinMode(0, OUTPUT);
