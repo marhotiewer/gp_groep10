@@ -1,2 +1,11 @@
 # gp_groep10
-Dit is de Read.meh
+
+Install:
+```
+sudo apt install wiringpi
+```
+
+Compile with:
+```
+g++ -Wall -Werror main.cpp -lwiringPi -lpthread
+```
