@@ -6,7 +6,13 @@ int main(int argc, char* argv[]) {
     httplib::Server svr;
 
     wiringPiSetup();
-    pinMode(0, OUTPUT);
+    pinMode(17, PWM_OUTPUT);
+    
+    for(;;) {
+        for(int i = 0; i < 1024; i++) {
+            pwmWrite(17, i);
+        }
+    }
 
     svr.Get("/on", [](const httplib::Request &, httplib::Response &res) {
           res.set_content("ON", "text/plain");
