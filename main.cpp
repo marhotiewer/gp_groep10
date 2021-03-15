@@ -6,11 +6,11 @@ int main(int argc, char* argv[]) {
     httplib::Server svr;
 
     wiringPiSetup();
-    pinMode(17, PWM_OUTPUT);
+    pinMode(7, PWM_OUTPUT);
     
     for(;;) {
         for(int i = 0; i < 1024; i++) {
-            pwmWrite(17, i);
+            pwmWrite(7, i);
         }
     }
 
