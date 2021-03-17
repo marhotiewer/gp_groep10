@@ -19,9 +19,8 @@ int main(int argc, char* argv[]) {
     }
 
     httplib::Server svr;
-    svr.Get("/steer", [](const httplib::Request&, httplib::Response &res) {
-        res.set_content("STEER", "text/plain");
-        std::cout << "STEER\n";
+    svr.Post("/steer", [](const httplib::Request &req, httplib::Response &res) {
+        std::cout << "(" << req.remote_addr << ") 200 OK: " << req.body << std::endl;
     });
 
     svr.listen("0.0.0.0", 8080);
