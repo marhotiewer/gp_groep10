@@ -7,5 +7,5 @@ sudo apt install wiringpi
 
 Compile with:
 ```
-g++ -Wall -Werror main.cpp -lwiringPi -lpthread
+g++ -Wno-psabi main.cpp -o server -lwiringPi -lpthread
 ```
