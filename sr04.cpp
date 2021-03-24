@@ -1,13 +1,7 @@
 #include <wiringPi.h>
 #include <iostream>
-#include <chrono>
 
 void sr04(){
-	wiringPiSetup();
-	pinMode(5, OUTPUT);
-	pinMode(4, INPUT);
-	pullUpDnControl(4, PUD_DOWN);
-	
 	digitalWrite(5, HIGH);
 	delay(1);
 	digitalWrite(5, LOW);
@@ -26,7 +20,12 @@ void sr04(){
 }
 
 int main(int argc, char* argv[]) {
-	for(;;) {
+    wiringPiSetup();
+    pinMode(5, OUTPUT);
+    pinMode(4, INPUT);
+    pullUpDnControl(4, PUD_DOWN);
+
+    for(;;) {
 		sr04();
 		delay(500);
 	}
