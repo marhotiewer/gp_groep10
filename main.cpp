@@ -20,8 +20,12 @@ int main(int argc, char* argv[]) {
         std::cout << "(" << req.remote_addr << ") 200 OK: " << req.body << std::endl;
         auto data = json::parse(req.body);
         pwmWrite(1, data["angle"]);
+
+        res.set_header("Access-Control-Allow-Origin", "*");
+        res.set_content(req.body, "application/json");
     });
 
     svr.listen("0.0.0.0", 80);
     return 0;
 }
+
