@@ -1,7 +1,6 @@
 #include <wiringPi.h>
-#include <chrono>
 #include <iostream>
-#include <thread>
+#include <chrono>
 
 void sr04(){
 	wiringPiSetup();
@@ -13,23 +12,23 @@ void sr04(){
 	delay(1);
 	digitalWrite(5, LOW);
 
-	std::chrono::steady_clock::time_point begin;
-	std::chrono::steady_clock::time_point end;
-	
+    unsigned int start = 0;
+    unsigned int end = 0;
+
 	while(digitalRead(4) == LOW){
-		begin = std::chrono::steady_clock::now();
+        start = millis();
 	}
 	while(digitalRead(4) == HIGH){
-		end = std::chrono::steady_clock::now();
+        end = millis();
 	}
 	
-	std::cout << "Afstand: " << std::chrono::duration_cast<std::chrono::seconds>((end - begin)*17165).count() << " cm\n";
+	std::cout << "Afstand: " << end - begin * 17165000 << "cm\n";
 }
 
-
-int main(){
-	while(true){
+int main(int argc, char* argv[]) {
+	for(;;) {
 		sr04();
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		delay(500);
 	}
 }
+
