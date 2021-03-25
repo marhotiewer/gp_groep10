@@ -1,0 +1,100 @@
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		<title>Car Control</title>
+	</head>
+	<body>
+		<div id="controls">
+			<div class="button" id="forward">W</div>
+			<div class="button" id="left">A</div>
+			<div class="button" id="backwards">S</div>
+			<div class="button" id="right">D</div>
+		</div>
+	</body>
+	<style>
+		html {
+			font-family: Arial, Helvetica, sans-serif;
+		}
+		.button {
+			background-color: #D3D3D3;
+			border: 1px solid black;
+			vertical-align: middle;
+			text-align: center;
+			line-height: 125px;
+			height: 125px;
+			width: 125px;
+			margin: 1px;
+			padding: 0;
+		}
+		#left, #backwards, #right { float: left; }
+		#forward { margin-left: 130px; }
+	</style>
+	<script>
+		var aPressed = dPressed = wPressed = sPressed = false;
+		function steer(angle) {
+			$.ajax({
+				type: 'POST',
+				url: 'http://192.168.1.203/steer',
+				data: '{"angle":'+angle+'}',
+				dataType: 'json',
+				error: function (responseData, textStatus, errorThrown) {
+					alert('POST failed.');
+				}
+			});
+		}
+		$(window).keydown(function(e) {
+			var ev = e || window.event;
+			var key = ev.keyCode || ev.which;
+
+			// A key pressed
+			if(key == 65 && !aPressed && !dPressed) {
+				$("#left").css('background-color', '#A9A9A9');
+				aPressed = true;
+				steer(3);
+			}
+			// D key pressed
+			else if(key == 68 && !dPressed && !aPressed) {
+				$("#right").css('background-color', '#A9A9A9');
+				dPressed = true;
+				steer(23);
+			}
+			// W key pressed
+			if(key == 87 && !wPressed && !sPressed) {
+				$("#forward").css('background-color', '#A9A9A9');
+				wPressed = true;
+			}
+			// S key pressed
+			else if(key == 83 && !sPressed && !wPressed) {
+				$("#backwards").css('background-color', '#A9A9A9');
+				sPressed = true;
+			}
+		});
+		$(window).keyup(function(e) {
+			var ev = e || window.event;
+			var key = ev.keyCode || ev.which;
+
+			// A key released
+			if(key == 65 && aPressed) {
+				$("#left").css('background-color', '#D3D3D3');
+				aPressed = false;
+				steer(13);
+			}
+			// D key released
+			else if(key == 68 && dPressed) {
+				$("#right").css('background-color', '#D3D3D3');
+				dPressed = false;
+				steer(13);
+			}
+			// W key released
+			if(key == 87 && wPressed) {
+				$("#forward").css('background-color', '#D3D3D3');
+				wPressed = false;
+			}
+			// S key released
+			else if(key == 83 && sPressed) {
+				$("#backwards").css('background-color', '#D3D3D3');
+				sPressed = false;
+			}
+		});
+	</script>
+</html>
