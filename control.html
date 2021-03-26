@@ -34,7 +34,7 @@
 		function steer(angle) {
 			$.ajax({
 				type: 'POST',
-				url: 'http://192.168.1.203/steer',
+				url: 'http://'+location.hostname+'/steer',
 				data: '{"angle":'+angle+'}',
 				dataType: 'json',
 				error: function (responseData, textStatus, errorThrown) {
