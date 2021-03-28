@@ -9,6 +9,7 @@
 			<div class="button" id="left">A</div>
 			<div class="button" id="backwards">S</div>
 			<div class="button" id="right">D</div>
+            <img id="stream" src="" />
 		</div>
 	</body>
 	<style>
@@ -30,6 +31,9 @@
 		#forward { margin-left: 130px; }
 	</style>
 	<script>
+		$(document).ready(function() {
+			$("#stream").attr('src','http://'+location.hostname+':8080/?action=stream');
+		});
 		var aPressed = dPressed = wPressed = sPressed = false;
 		function steer(angle) {
 			$.ajax({
