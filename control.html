@@ -35,11 +35,23 @@
 			$("#stream").attr('src','http://'+location.hostname+':8080/?action=stream');
 		});
 		var aPressed = dPressed = wPressed = sPressed = false;
+		
 		function steer(angle) {
 			$.ajax({
 				type: 'POST',
 				url: 'http://'+location.hostname+'/steer',
 				data: '{"angle":'+angle+'}',
+				dataType: 'json',
+				error: function (responseData, textStatus, errorThrown) {
+					alert('POST failed.');
+				}
+			});
+		}
+		function throttle(speed) {
+			$.ajax({
+				type: 'POST',
+				url: 'http://'+location.hostname+'/throttle',
+				data: '{"speed":'+speed+'}',
 				dataType: 'json',
 				error: function (responseData, textStatus, errorThrown) {
 					alert('POST failed.');
@@ -66,11 +78,13 @@
 			if(key == 87 && !wPressed && !sPressed) {
 				$("#forward").css('background-color', '#A9A9A9');
 				wPressed = true;
+				throttle(100);
 			}
 			// S key pressed
 			else if(key == 83 && !sPressed && !wPressed) {
 				$("#backwards").css('background-color', '#A9A9A9');
 				sPressed = true;
+				throttle(100);
 			}
 		});
 		$(window).keyup(function(e) {
@@ -93,11 +107,13 @@
 			if(key == 87 && wPressed) {
 				$("#forward").css('background-color', '#D3D3D3');
 				wPressed = false;
+				throttle(0);
 			}
 			// S key released
 			else if(key == 83 && sPressed) {
 				$("#backwards").css('background-color', '#D3D3D3');
 				sPressed = false;
+				throttle(0);
 			}
 		});
 	</script>
