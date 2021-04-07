@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 		<title>Car Control</title>
 	</head>
 	<body>
@@ -9,6 +9,8 @@
 			<div class="button" id="left">A</div>
 			<div class="button" id="backwards">S</div>
 			<div class="button" id="right">D</div>
+			
+			Speed: <input type="range" min="1" max="100" value="50" class="slider" id="speed">
             <img id="stream" src="" />
 		</div>
 	</body>
@@ -35,11 +37,23 @@
 			$("#stream").attr('src','http://'+location.hostname+':8080/?action=stream');
 		});
 		var aPressed = dPressed = wPressed = sPressed = false;
+		
 		function steer(angle) {
 			$.ajax({
 				type: 'POST',
 				url: 'http://'+location.hostname+'/steer',
 				data: '{"angle":'+angle+'}',
+				dataType: 'json',
+				error: function (responseData, textStatus, errorThrown) {
+					alert('POST failed.');
+				}
+			});
+		}
+		function throttle(speed, direction = false) {
+			$.ajax({
+				type: 'POST',
+				url: 'http://'+location.hostname+'/throttle',
+				data: '{"speed":'+speed+', "direction": '+direction+'}',
 				dataType: 'json',
 				error: function (responseData, textStatus, errorThrown) {
 					alert('POST failed.');
@@ -66,11 +80,13 @@
 			if(key == 87 && !wPressed && !sPressed) {
 				$("#forward").css('background-color', '#A9A9A9');
 				wPressed = true;
+				throttle($('#speed').val());
 			}
 			// S key pressed
 			else if(key == 83 && !sPressed && !wPressed) {
 				$("#backwards").css('background-color', '#A9A9A9');
 				sPressed = true;
+				throttle($('#speed').val(), true);
 			}
 		});
 		$(window).keyup(function(e) {
@@ -93,11 +109,13 @@
 			if(key == 87 && wPressed) {
 				$("#forward").css('background-color', '#D3D3D3');
 				wPressed = false;
+				throttle(0);
 			}
 			// S key released
 			else if(key == 83 && sPressed) {
 				$("#backwards").css('background-color', '#D3D3D3');
 				sPressed = false;
+				throttle(0);
 			}
 		});
 	</script>
