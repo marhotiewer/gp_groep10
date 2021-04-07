@@ -32,8 +32,8 @@ int main(int argc, char* argv[]) {
 	softPwmCreate(MOTOR_PWM, 0, 100);
 	pinMode(DIRECTIONAL_1, OUTPUT);
 	pinMode(DIRECTIONAL_2, OUTPUT);
-	pinWrite(DIRECTIONAL_1, HIGH);
-	pinWrite(DIRECTIONAL_1, LOW);
+	digitalWrite(DIRECTIONAL_1, HIGH);
+	digitalWrite(DIRECTIONAL_2, LOW);
     
 	// Bind webserver endpoints
 	svr.Get("/", [](const httplib::Request &req, httplib::Response &res) {
@@ -51,7 +51,16 @@ int main(int argc, char* argv[]) {
 	svr.Post("/throttle", [](const httplib::Request &req, httplib::Response &res) {
         std::cout << "(" << req.remote_addr << ") 200 OK: " << req.body << std::endl;
 		auto data = json::parse(req.body);
-        softPwmWrite(MOTOR_PWM, data["speed"]);
+		
+		if(data["direction"]) {
+			digitalWrite(DIRECTIONAL_1, LOW);
+			digitalWrite(DIRECTIONAL_2, HIGH);
+		}
+		else {
+			digitalWrite(DIRECTIONAL_1, HIGH);
+			digitalWrite(DIRECTIONAL_2, LOW);
+		}
+		softPwmWrite(MOTOR_PWM, data["speed"]);
         res.set_content(req.body, "application/json");
     });
 	// Start listening on port 80, this will block the thread
