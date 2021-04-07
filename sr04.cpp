@@ -16,7 +16,7 @@ void sr04(){
         end = millis();
 	}
 	
-	std::cout << "Afstand: " << end - begin * 17165000 << "cm\n";
+	std::cout << "Afstand: " << end - start * 17165000 << "cm\n";
 }
 
 int main(int argc, char* argv[]) {
