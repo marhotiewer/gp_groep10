@@ -43,26 +43,33 @@ void get_distance(int &distance) {
 	for(;;){
 		distance = read_sr04();
 		
-		if(distance < 5) {
+		if(distance < 4) {
 			digitalWrite(SPEAKER, HIGH);
-			delay(25);
+			delay(50);
 			digitalWrite(SPEAKER, LOW);
-			delay(25);
+			delay(50);
 		}
-		else if(distance < 10) {
+		if(distance < 8) {
 			digitalWrite(SPEAKER, HIGH);
-			delay(50);
+			delay(125);
 			digitalWrite(SPEAKER, LOW);
-			delay(50);
+			delay(125);
 		}
 		else if(distance < 15) {
 			digitalWrite(SPEAKER, HIGH);
-			delay(100);
+			delay(250);
 			digitalWrite(SPEAKER, LOW);
-			delay(100);
+			delay(250);
+		}
+		else if(distance < 25) {
+			digitalWrite(SPEAKER, HIGH);
+			delay(500);
+			digitalWrite(SPEAKER, LOW);
+			delay(500);
 		}
 		else {
-			delay(100);
+			digitalWrite(SPEAKER, HIGH);
+			delay(500);
 		}
 	}
 }
